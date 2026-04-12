@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Search, X, Trash2, ExternalLink, AlertTriangle, BookOpen } from 'lucide-react';
+import toast from 'react-hot-toast';
 import adminService from '../../services/adminService';
 import useDebounce from '../../hooks/useDebounce';
 import { CATEGORIES, DIFFICULTIES } from '../../utils/constants';
@@ -80,8 +81,9 @@ const AdminRecipesPage = () => {
     try {
       await adminService.deleteRecipe(id);
       setRecipes((prev) => prev.filter((r) => r._id !== id));
+      toast.success('Recipe deleted successfully');
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to delete recipe');
+      toast.error(err.response?.data?.message || 'Failed to delete recipe');
     }
   };
 

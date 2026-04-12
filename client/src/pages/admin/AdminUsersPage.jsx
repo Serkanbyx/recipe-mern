@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Search, X, Trash2, AlertTriangle, Users } from 'lucide-react';
+import toast from 'react-hot-toast';
 import { useAuth } from '../../contexts/AuthContext';
 import adminService from '../../services/adminService';
 import useDebounce from '../../hooks/useDebounce';
@@ -69,8 +70,9 @@ const AdminUsersPage = () => {
       setUsers((prev) =>
         prev.map((u) => (u._id === id ? { ...u, role } : u))
       );
+      toast.success('User role updated successfully');
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to update role');
+      toast.error(err.response?.data?.message || 'Failed to update role');
     }
   };
 
@@ -87,8 +89,9 @@ const AdminUsersPage = () => {
     try {
       await adminService.deleteUser(id);
       setUsers((prev) => prev.filter((u) => u._id !== id));
+      toast.success('User deleted successfully');
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to delete user');
+      toast.error(err.response?.data?.message || 'Failed to delete user');
     }
   };
 

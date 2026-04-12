@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
+import ScrollToTop from './components/ui/ScrollToTop';
 import MainLayout from './components/layout/MainLayout';
 import AdminLayout from './components/layout/AdminLayout';
 import SettingsLayout from './components/layout/SettingsLayout';
@@ -26,6 +27,7 @@ import AdminRecipesPage from './pages/admin/AdminRecipesPage';
 const App = () => {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         {/* Main Layout */}
         <Route element={<MainLayout />}>

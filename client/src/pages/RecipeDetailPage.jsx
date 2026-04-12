@@ -19,7 +19,7 @@ import toast from 'react-hot-toast';
 import { useAuth } from '../contexts/AuthContext';
 import recipeService from '../services/recipeService';
 import favoriteService from '../services/favoriteService';
-import Spinner from '../components/ui/Spinner';
+import RecipeDetailSkeleton from '../components/ui/RecipeDetailSkeleton';
 import ConfirmModal from '../components/ui/ConfirmModal';
 import { formatDate } from '../utils/formatDate';
 import { formatCookTime, getErrorMessage } from '../utils/helpers';
@@ -150,7 +150,7 @@ const RecipeDetailPage = () => {
   };
 
   if (loading) {
-    return <Spinner fullScreen />;
+    return <RecipeDetailSkeleton />;
   }
 
   if (notFound || !recipe) {

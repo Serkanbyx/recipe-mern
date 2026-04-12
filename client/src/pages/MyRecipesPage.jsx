@@ -1,13 +1,15 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { BookOpen, PlusCircle, Pencil, Trash2 } from 'lucide-react';
+import toast from 'react-hot-toast';
 import recipeService from '../services/recipeService';
+import { getErrorMessage } from '../utils/helpers';
 import RecipeCard from '../components/recipe/RecipeCard';
 import StatusBadge from '../components/ui/StatusBadge';
 import Pagination from '../components/ui/Pagination';
 import ConfirmModal from '../components/ui/ConfirmModal';
 import EmptyState from '../components/ui/EmptyState';
-import Spinner from '../components/ui/Spinner';
+import { RecipeGridSkeleton } from '../components/ui/RecipeCardSkeleton';
 
 const LIMIT = 12;
 
@@ -16,25 +18,6 @@ const STATUS_TABS = [
   { key: 'published', label: 'Published' },
   { key: 'draft', label: 'Draft' },
 ];
-
-const RecipeCardSkeleton = () => (
-  <div className="animate-pulse bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700">
-    <div className="aspect-16/10 bg-gray-200 dark:bg-gray-700" />
-    <div className="p-4 space-y-3">
-      <div className="h-5 bg-gray-200 dark:bg-gray-700 rounded w-3/4" />
-      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full" />
-      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2" />
-    </div>
-  </div>
-);
-
-const LoadingSkeleton = () => (
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-    {Array.from({ length: 8 }).map((_, i) => (
-      <RecipeCardSkeleton key={i} />
-    ))}
-  </div>
-);
 
 const MyRecipesPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -115,7 +98,9 @@ const MyRecipesPage = () => {
       await recipeService.delete(deleteTarget);
       setRecipes((prev) => prev.filter((r) => r._id !== deleteTarget));
       setTotal((prev) => prev - 1);
-    } catch {
+      toast.success('Recipe deleted successfully');
+    } catch (error) {
+      toast.error(getErrorMessage(error));
       await fetchRecipes();
     } finally {
       setDeleting(false);
@@ -168,7 +153,7 @@ const MyRecipesPage = () => {
 
       {/* Content */}
       {loading ? (
-        <LoadingSkeleton />
+        <RecipeGridSkeleton />
       ) : recipes.length === 0 ? (
         <EmptyState
           icon={BookOpen}

@@ -8,32 +8,9 @@ import SearchBar from '../components/recipe/SearchBar';
 import CategoryFilter from '../components/recipe/CategoryFilter';
 import RecipeGrid from '../components/recipe/RecipeGrid';
 import Pagination from '../components/ui/Pagination';
-import Spinner from '../components/ui/Spinner';
+import { RecipeGridSkeleton } from '../components/ui/RecipeCardSkeleton';
 
 const LIMIT = 12;
-
-const RecipeCardSkeleton = () => (
-  <div className="animate-pulse bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700">
-    <div className="aspect-16/10 bg-gray-200 dark:bg-gray-700" />
-    <div className="p-4 space-y-3">
-      <div className="h-5 bg-gray-200 dark:bg-gray-700 rounded w-3/4" />
-      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full" />
-      <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2" />
-      <div className="flex justify-between pt-3 border-t border-gray-100 dark:border-gray-700">
-        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-20" />
-        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-10" />
-      </div>
-    </div>
-  </div>
-);
-
-const LoadingSkeleton = () => (
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-    {Array.from({ length: 8 }).map((_, i) => (
-      <RecipeCardSkeleton key={i} />
-    ))}
-  </div>
-);
 
 const HomePage = () => {
   const { isAuthenticated } = useAuth();
@@ -187,7 +164,7 @@ const HomePage = () => {
 
         {/* Recipe Grid or Loading */}
         {loading ? (
-          <LoadingSkeleton />
+          <RecipeGridSkeleton />
         ) : (
           <RecipeGrid
             recipes={recipes}

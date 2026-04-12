@@ -6,7 +6,6 @@ import { useAuth } from '../contexts/AuthContext';
 import recipeService from '../services/recipeService';
 import IngredientForm from '../components/recipe/IngredientForm';
 import StepForm from '../components/recipe/StepForm';
-import Spinner from '../components/ui/Spinner';
 import { CATEGORIES, DIFFICULTIES } from '../utils/constants';
 import { getErrorMessage } from '../utils/helpers';
 
