@@ -8,6 +8,7 @@ import env from './config/env.js';
 import { globalLimiter } from './middlewares/rateLimiter.js';
 import errorHandler from './middlewares/errorHandler.js';
 import authRoutes from './routes/authRoutes.js';
+import recipeRoutes from './routes/recipeRoutes.js';
 
 const app = express();
 
@@ -27,7 +28,7 @@ app.get('/api/health', (req, res) => {
 
 // Routes
 app.use('/api/auth', authRoutes);
-// app.use('/api/recipes', recipeRoutes);
+app.use('/api/recipes', recipeRoutes);
 // app.use('/api/favorites', favoriteRoutes);
 // app.use('/api/admin', adminRoutes);
 
