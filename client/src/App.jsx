@@ -1,120 +1,70 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-function App() {
-  const [count, setCount] = useState(0)
+import MainLayout from './components/layout/MainLayout';
+import AdminLayout from './components/layout/AdminLayout';
+import SettingsLayout from './components/layout/SettingsLayout';
 
+import ProtectedRoute from './components/guards/ProtectedRoute';
+import AdminRoute from './components/guards/AdminRoute';
+import GuestOnlyRoute from './components/guards/GuestOnlyRoute';
+
+import HomePage from './pages/HomePage';
+import RecipeDetailPage from './pages/RecipeDetailPage';
+import ProfilePage from './pages/ProfilePage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import CreateRecipePage from './pages/CreateRecipePage';
+import EditRecipePage from './pages/EditRecipePage';
+import MyRecipesPage from './pages/MyRecipesPage';
+import FavoritesPage from './pages/FavoritesPage';
+import SettingsPage from './pages/SettingsPage';
+import NotFoundPage from './pages/NotFoundPage';
+import AdminDashboardPage from './pages/admin/AdminDashboardPage';
+import AdminUsersPage from './pages/admin/AdminUsersPage';
+import AdminRecipesPage from './pages/admin/AdminRecipesPage';
+
+const App = () => {
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <BrowserRouter>
+      <Routes>
+        {/* Main Layout */}
+        <Route element={<MainLayout />}>
+          {/* Public */}
+          <Route path="/" element={<HomePage />} />
+          <Route path="/recipes/:slug" element={<RecipeDetailPage />} />
+          <Route path="/profile/:userId" element={<ProfilePage />} />
 
-      <div className="ticks"></div>
+          {/* Guest Only */}
+          <Route path="/login" element={<GuestOnlyRoute><LoginPage /></GuestOnlyRoute>} />
+          <Route path="/register" element={<GuestOnlyRoute><RegisterPage /></GuestOnlyRoute>} />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+          {/* Protected */}
+          <Route path="/recipes/new" element={<ProtectedRoute><CreateRecipePage /></ProtectedRoute>} />
+          <Route path="/recipes/edit/:id" element={<ProtectedRoute><EditRecipePage /></ProtectedRoute>} />
+          <Route path="/my-recipes" element={<ProtectedRoute><MyRecipesPage /></ProtectedRoute>} />
+          <Route path="/favorites" element={<ProtectedRoute><FavoritesPage /></ProtectedRoute>} />
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
-}
+          {/* Settings (nested layout) */}
+          <Route path="/settings" element={<ProtectedRoute><SettingsLayout /></ProtectedRoute>}>
+            <Route index element={<SettingsPage tab="profile" />} />
+            <Route path="account" element={<SettingsPage tab="account" />} />
+            <Route path="appearance" element={<SettingsPage tab="appearance" />} />
+            <Route path="privacy" element={<SettingsPage tab="privacy" />} />
+          </Route>
 
-export default App
+          {/* 404 */}
+          <Route path="*" element={<NotFoundPage />} />
+        </Route>
+
+        {/* Admin Layout */}
+        <Route path="/admin" element={<AdminRoute><AdminLayout /></AdminRoute>}>
+          <Route index element={<AdminDashboardPage />} />
+          <Route path="users" element={<AdminUsersPage />} />
+          <Route path="recipes" element={<AdminRecipesPage />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+};
+
+export default App;
