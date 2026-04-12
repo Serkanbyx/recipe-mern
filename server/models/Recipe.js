@@ -144,7 +144,7 @@ const recipeSchema = new mongoose.Schema(
 recipeSchema.index({ title: 'text', description: 'text', tags: 'text' });
 recipeSchema.index({ category: 1, status: 1 });
 recipeSchema.index({ author: 1 });
-recipeSchema.index({ slug: 1 }, { unique: true });
+// slug uniqueness is enforced via field-level `unique: true`
 recipeSchema.index({ createdAt: -1 });
 
 // Virtuals

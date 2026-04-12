@@ -13,12 +13,12 @@ const errorHandler = (err, req, res, _next) => {
   // Mongoose duplicate key
   if (err.code === 11000) {
     statusCode = 400;
-    const field = Object.keys(err.keyValue)[0];
+    const field = err.keyValue ? Object.keys(err.keyValue)[0] : 'field';
     message = `A record with this ${field} already exists`;
   }
 
   // Mongoose validation error
-  if (err.name === 'ValidationError') {
+  if (err.name === 'ValidationError' && err.errors) {
     statusCode = 400;
     message = Object.values(err.errors).map((e) => e.message).join(', ');
   }
@@ -32,6 +32,11 @@ const errorHandler = (err, req, res, _next) => {
   if (err.name === 'TokenExpiredError') {
     statusCode = 401;
     message = 'Token expired';
+  }
+
+  if (statusCode >= 500) {
+    console.error(`[ERROR] ${req.method} ${req.originalUrl} → ${statusCode}: ${err.message}`);
+    console.error(err.stack);
   }
 
   res.status(statusCode).json({
