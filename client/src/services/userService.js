@@ -1,7 +1,7 @@
 import api from './api';
 
 const userService = {
-  getPublicProfile: (userId) => api.get(`/auth/users/${userId}`),
+  getPublicProfile: (userId, params) => api.get(`/auth/users/${userId}`, { params }),
 };
 
 export default userService;

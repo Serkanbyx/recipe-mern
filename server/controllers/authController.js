@@ -1,4 +1,5 @@
 import User from '../models/User.js';
+import Recipe from '../models/Recipe.js';
 import generateToken from '../utils/generateToken.js';
 import { deleteCloudinaryImage } from '../utils/helpers.js';
 
@@ -66,6 +67,86 @@ export const getMe = async (req, res) => {
   res.json({ success: true, data: { user: sanitizeUser(req.user) } });
 };
 
+// GET /api/auth/users/:userId
+export const getPublicProfile = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const { recipePage = 1, favoritePage = 1, limit = 12 } = req.query;
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    const isOwnProfile = req.user && req.user._id.toString() === userId;
+    const showEmail = isOwnProfile || user.preferences?.privacy?.showEmail;
+    const showFavorites = isOwnProfile || user.preferences?.privacy?.showFavorites;
+
+    const profileData = {
+      _id: user._id,
+      name: user.name,
+      avatar: user.avatar,
+      bio: user.bio,
+      createdAt: user.createdAt,
+    };
+
+    if (showEmail) {
+      profileData.email = user.email;
+    }
+
+    profileData.privacy = {
+      showEmail: !!showEmail,
+      showFavorites: !!showFavorites,
+    };
+
+    const perPage = Math.min(50, Math.max(1, parseInt(limit, 10) || 12));
+
+    // Published recipes by this user
+    const recipeCurrentPage = Math.max(1, parseInt(recipePage, 10) || 1);
+    const recipeFilter = { author: userId, status: 'published' };
+    const recipeTotal = await Recipe.countDocuments(recipeFilter);
+    const recipeTotalPages = Math.ceil(recipeTotal / perPage) || 1;
+
+    const recipes = await Recipe.find(recipeFilter)
+      .sort({ createdAt: -1 })
+      .skip((recipeCurrentPage - 1) * perPage)
+      .limit(perPage)
+      .populate('author', 'name avatar');
+
+    profileData.recipes = {
+      items: recipes,
+      page: recipeCurrentPage,
+      totalPages: recipeTotalPages,
+      total: recipeTotal,
+    };
+
+    // Favorites (only if allowed)
+    if (showFavorites) {
+      const favCurrentPage = Math.max(1, parseInt(favoritePage, 10) || 1);
+      const favFilter = { _id: { $in: user.favorites }, status: 'published' };
+      const favTotal = await Recipe.countDocuments(favFilter);
+      const favTotalPages = Math.ceil(favTotal / perPage) || 1;
+
+      const favorites = await Recipe.find(favFilter)
+        .sort({ createdAt: -1 })
+        .skip((favCurrentPage - 1) * perPage)
+        .limit(perPage)
+        .populate('author', 'name avatar');
+
+      profileData.favorites = {
+        items: favorites,
+        page: favCurrentPage,
+        totalPages: favTotalPages,
+        total: favTotal,
+      };
+    }
+
+    res.json({ success: true, data: { profile: profileData } });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // PUT /api/auth/profile
 export const updateProfile = async (req, res, next) => {
   try {
@@ -119,8 +200,6 @@ export const deleteAccount = async (req, res, next) => {
     if (!isMatch) {
       return res.status(400).json({ success: false, message: 'Password is incorrect' });
     }
-
-    const Recipe = (await import('../models/Recipe.js')).default;
 
     const userRecipes = await Recipe.find({ author: user._id });
 

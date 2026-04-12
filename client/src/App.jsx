@@ -10,7 +10,7 @@ import GuestOnlyRoute from './components/guards/GuestOnlyRoute';
 
 import HomePage from './pages/HomePage';
 import RecipeDetailPage from './pages/RecipeDetailPage';
-import ProfilePage from './pages/ProfilePage';
+import ProfilePage from './pages/user/ProfilePage';
 import LoginPage from './pages/auth/LoginPage';
 import RegisterPage from './pages/auth/RegisterPage';
 import CreateRecipePage from './pages/CreateRecipePage';
