@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Outlet, NavLink } from 'react-router-dom';
+import { Outlet, NavLink, useLocation } from 'react-router-dom';
 import {
   User,
   Shield,
@@ -24,6 +24,7 @@ const sidebarLinkClass = ({ isActive }) =>
 
 const SettingsLayout = () => {
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
+  const location = useLocation();
 
   const activeSection = settingsSections.find(
     (section) =>

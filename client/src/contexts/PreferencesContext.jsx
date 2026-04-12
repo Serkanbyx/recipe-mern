@@ -86,7 +86,7 @@ export const PreferencesProvider = ({ children }) => {
 
     if (isAuthenticated) {
       try {
-        await authService.updatePreferences({ [key]: value });
+        await authService.updatePreferences({ preferences: { [key]: value } });
       } catch (error) {
         console.error('Failed to sync preference with server:', error);
       }

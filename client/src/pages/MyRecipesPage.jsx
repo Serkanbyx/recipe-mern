@@ -96,8 +96,17 @@ const MyRecipesPage = () => {
     setDeleting(true);
     try {
       await recipeService.delete(deleteTarget);
-      setRecipes((prev) => prev.filter((r) => r._id !== deleteTarget));
-      setTotal((prev) => prev - 1);
+      const remaining = recipes.filter((r) => r._id !== deleteTarget);
+      const newTotal = total - 1;
+      const newTotalPages = Math.max(1, Math.ceil(newTotal / LIMIT));
+
+      if (remaining.length === 0 && page > 1) {
+        updateParams({ page: String(Math.min(page, newTotalPages)) });
+      } else {
+        setRecipes(remaining);
+        setTotal(newTotal);
+        setTotalPages(newTotalPages);
+      }
       toast.success('Recipe deleted successfully');
     } catch (error) {
       toast.error(getErrorMessage(error));
@@ -106,7 +115,7 @@ const MyRecipesPage = () => {
       setDeleting(false);
       setDeleteTarget(null);
     }
-  }, [deleteTarget, fetchRecipes]);
+  }, [deleteTarget, fetchRecipes, recipes, total, page, updateParams]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">

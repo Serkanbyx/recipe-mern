@@ -228,6 +228,11 @@ export const deleteAccount = async (req, res, next) => {
 export const updatePreferences = async (req, res, next) => {
   try {
     const { preferences } = req.body;
+
+    if (!preferences || typeof preferences !== 'object') {
+      return res.status(400).json({ success: false, message: 'Preferences object is required' });
+    }
+
     const user = req.user;
 
     const validThemes = ['light', 'dark', 'system'];

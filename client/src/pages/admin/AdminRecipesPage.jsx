@@ -132,7 +132,7 @@ const AdminRecipesPage = () => {
           >
             <option value="">All Categories</option>
             {CATEGORIES.map((cat) => (
-              <option key={cat} value={cat.toLowerCase()}>{cat}</option>
+              <option key={cat} value={cat}>{cat}</option>
             ))}
           </select>
 
@@ -153,7 +153,7 @@ const AdminRecipesPage = () => {
           >
             <option value="">All Difficulties</option>
             {DIFFICULTIES.map((diff) => (
-              <option key={diff} value={diff.toLowerCase()}>{diff}</option>
+              <option key={diff} value={diff}>{diff}</option>
             ))}
           </select>
         </div>

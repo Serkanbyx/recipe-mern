@@ -70,15 +70,25 @@ const FavoritesPage = () => {
 
   const handleUnfavorite = useCallback(async (recipeId) => {
     try {
-      setRecipes((prev) => prev.filter((r) => r._id !== recipeId));
-      setTotal((prev) => prev - 1);
+      const remaining = recipes.filter((r) => r._id !== recipeId);
+      const newTotal = total - 1;
+      const newTotalPages = Math.max(1, Math.ceil(newTotal / LIMIT));
+
+      setRecipes(remaining);
+      setTotal(newTotal);
+      setTotalPages(newTotalPages);
+
       await favoriteService.toggleFavorite(recipeId);
       toast.success('Removed from favorites');
+
+      if (remaining.length === 0 && page > 1) {
+        updateParams({ page: String(Math.min(page, newTotalPages)) });
+      }
     } catch (error) {
       toast.error(getErrorMessage(error));
       await fetchFavorites();
     }
-  }, [fetchFavorites]);
+  }, [fetchFavorites, recipes, total, page, updateParams]);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">

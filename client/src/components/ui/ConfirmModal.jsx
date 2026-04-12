@@ -102,9 +102,12 @@ const ConfirmModal = ({
           </button>
           <button
             ref={confirmRef}
-            onClick={() => {
-              onConfirm();
-              onClose();
+            onClick={async () => {
+              try {
+                await onConfirm();
+              } finally {
+                onClose();
+              }
             }}
             className={`px-4 py-2 text-sm font-medium rounded-xl text-white transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-800 ${colorMap[confirmColor] || colorMap.red}`}
           >

@@ -657,7 +657,7 @@ const PrivacySettings = () => {
   const handlePrivacyChange = async (key, value) => {
     try {
       const { data } = await authService.updatePreferences({
-        privacy: { [key]: value },
+        preferences: { privacy: { [key]: value } },
       });
 
       updateUser({
