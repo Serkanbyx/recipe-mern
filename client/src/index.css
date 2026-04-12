@@ -41,6 +41,15 @@
 .density-comfortable { --spacing-unit: 1rem; }
 .density-spacious { --spacing-unit: 1.5rem; }
 
+/* Hide scrollbar for horizontal scroll containers */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* Disable animations */
 .no-animations * {
   animation-duration: 0s !important;
