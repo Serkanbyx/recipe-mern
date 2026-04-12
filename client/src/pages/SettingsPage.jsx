@@ -8,11 +8,17 @@ import {
   EyeOff,
   AlertTriangle,
   X,
+  Sun,
+  Moon,
+  Monitor,
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
+import { usePreferences } from '../contexts/PreferencesContext';
 import authService from '../services/authService';
 import recipeService from '../services/recipeService';
 import CharacterCounter from '../components/ui/CharacterCounter';
+import ToggleSwitch from '../components/ui/ToggleSwitch';
+import SelectableCard from '../components/ui/SelectableCard';
 
 const BIO_MAX_LENGTH = 300;
 
@@ -526,12 +532,192 @@ const AccountSettings = () => {
   );
 };
 
+/* ─────────────── Appearance Settings ─────────────── */
+
+const THEME_OPTIONS = [
+  { value: 'light', label: 'Light', icon: Sun },
+  { value: 'dark', label: 'Dark', icon: Moon },
+  { value: 'system', label: 'System', icon: Monitor },
+];
+
+const FONT_SIZE_OPTIONS = [
+  { value: 'small', label: 'Small' },
+  { value: 'medium', label: 'Medium' },
+  { value: 'large', label: 'Large' },
+];
+
+const DENSITY_OPTIONS = [
+  { value: 'compact', label: 'Compact' },
+  { value: 'comfortable', label: 'Comfortable' },
+  { value: 'spacious', label: 'Spacious' },
+];
+
+const FONT_SIZE_PREVIEW = {
+  small: '14px',
+  medium: '16px',
+  large: '18px',
+};
+
+const AppearanceSettings = () => {
+  const { theme, fontSize, contentDensity, animations, updatePreference } =
+    usePreferences();
+
+  return (
+    <div className="space-y-10">
+      <div>
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+          Appearance
+        </h2>
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+          Customize how the app looks and feels.
+        </p>
+      </div>
+
+      {/* Theme */}
+      <div className="space-y-3">
+        <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          Theme
+        </h3>
+        <div className="grid grid-cols-3 gap-3">
+          {THEME_OPTIONS.map((option) => (
+            <SelectableCard
+              key={option.value}
+              selected={theme === option.value}
+              onClick={() => updatePreference('theme', option.value)}
+              icon={option.icon}
+              label={option.label}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Font Size */}
+      <div className="space-y-3">
+        <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          Font Size
+        </h3>
+        <div className="grid grid-cols-3 gap-3">
+          {FONT_SIZE_OPTIONS.map((option) => (
+            <SelectableCard
+              key={option.value}
+              selected={fontSize === option.value}
+              onClick={() => updatePreference('fontSize', option.value)}
+              label={option.label}
+            />
+          ))}
+        </div>
+        <p
+          className="text-gray-500 dark:text-gray-400 mt-2 p-3 rounded-lg bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700"
+          style={{ fontSize: FONT_SIZE_PREVIEW[fontSize] }}
+        >
+          This is a preview of your selected font size.
+        </p>
+      </div>
+
+      {/* Content Density */}
+      <div className="space-y-3">
+        <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          Content Density
+        </h3>
+        <div className="grid grid-cols-3 gap-3">
+          {DENSITY_OPTIONS.map((option) => (
+            <SelectableCard
+              key={option.value}
+              selected={contentDensity === option.value}
+              onClick={() => updatePreference('contentDensity', option.value)}
+              label={option.label}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Animations */}
+      <div className="space-y-3">
+        <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          Motion
+        </h3>
+        <div className="p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+          <ToggleSwitch
+            checked={animations}
+            onChange={(val) => updatePreference('animations', val)}
+            label="Enable animations"
+            description="Toggle transitions and animations throughout the app."
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ─────────────── Privacy Settings ─────────────── */
+
+const PrivacySettings = () => {
+  const { user, updateUser } = useAuth();
+
+  const showEmail = user?.preferences?.privacy?.showEmail ?? false;
+  const showFavorites = user?.preferences?.privacy?.showFavorites ?? true;
+
+  const handlePrivacyChange = async (key, value) => {
+    try {
+      const { data } = await authService.updatePreferences({
+        privacy: { [key]: value },
+      });
+
+      updateUser({
+        ...user,
+        preferences: data.data.preferences,
+      });
+
+      toast.success('Privacy settings updated');
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || 'Failed to update privacy settings.'
+      );
+    }
+  };
+
+  return (
+    <div className="space-y-10">
+      <div>
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white">
+          Privacy
+        </h2>
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+          Control what others can see on your public profile.
+        </p>
+      </div>
+
+      <div className="space-y-4">
+        <div className="p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+          <ToggleSwitch
+            checked={showEmail}
+            onChange={(val) => handlePrivacyChange('showEmail', val)}
+            label="Show email on profile"
+            description="Allow other users to see your email address on your public profile."
+          />
+        </div>
+
+        <div className="p-4 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+          <ToggleSwitch
+            checked={showFavorites}
+            onChange={(val) => handlePrivacyChange('showFavorites', val)}
+            label="Show favorites on profile"
+            description="Allow other users to see your favorite recipes on your public profile."
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 /* ─────────────── Settings Page ─────────────── */
 
 const SettingsPage = ({ tab = 'profile' }) => {
   const sections = {
     profile: ProfileSettings,
     account: AccountSettings,
+    appearance: AppearanceSettings,
+    privacy: PrivacySettings,
   };
 
   const ActiveSection = sections[tab];
