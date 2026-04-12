@@ -34,6 +34,27 @@ const Footer = () => {
             </Link>
           </nav>
         </div>
+
+        <div className="mt-6 pt-4 border-t border-gray-100 dark:border-gray-800 text-center text-sm text-gray-400 dark:text-gray-500">
+          Created by{' '}
+          <a
+            href="https://serkanbayraktar.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-orange-500 hover:text-orange-600 dark:text-orange-400 dark:hover:text-orange-300 transition-colors"
+          >
+            Serkanby
+          </a>
+          {' | '}
+          <a
+            href="https://github.com/Serkanbyx"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-orange-500 hover:text-orange-600 dark:text-orange-400 dark:hover:text-orange-300 transition-colors"
+          >
+            Github
+          </a>
+        </div>
       </div>
     </footer>
   );
