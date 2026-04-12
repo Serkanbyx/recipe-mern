@@ -7,6 +7,16 @@ const difficultyColors = {
   Hard: 'bg-red-500/80 text-white',
 };
 
+const categoryGradients = {
+  Breakfast: 'from-amber-200 to-orange-400',
+  'Main Course': 'from-red-200 to-rose-400',
+  Dessert: 'from-pink-200 to-fuchsia-400',
+  Beverage: 'from-teal-200 to-cyan-400',
+  Snack: 'from-yellow-200 to-amber-400',
+  Soup: 'from-orange-200 to-red-300',
+  Salad: 'from-green-200 to-emerald-400',
+};
+
 const RecipeCard = ({ recipe }) => {
   const {
     title,
@@ -16,10 +26,13 @@ const RecipeCard = ({ recipe }) => {
     category,
     difficulty,
     cookTime,
+    prepTime,
     servings,
     author,
-    likesCount = 0,
+    likeCount = 0,
   } = recipe;
+
+  const totalTime = (prepTime || 0) + (cookTime || 0);
 
   return (
     <Link
@@ -36,7 +49,7 @@ const RecipeCard = ({ recipe }) => {
             loading="lazy"
           />
         ) : (
-          <div className="w-full h-full bg-linear-to-br from-primary-200 to-primary-400" />
+          <div className={`w-full h-full bg-linear-to-br ${categoryGradients[category] || 'from-primary-200 to-primary-400'}`} />
         )}
 
         {/* Category Badge */}
@@ -68,10 +81,10 @@ const RecipeCard = ({ recipe }) => {
 
         {/* Meta Row */}
         <div className="flex items-center gap-4 mt-3 text-sm text-gray-500 dark:text-gray-400">
-          {cookTime > 0 && (
+          {totalTime > 0 && (
             <span className="flex items-center gap-1">
               <Clock className="w-4 h-4" />
-              {cookTime} min
+              {totalTime} min
             </span>
           )}
           {servings > 0 && (
@@ -103,7 +116,7 @@ const RecipeCard = ({ recipe }) => {
 
           <span className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
             <Heart className="w-4 h-4" />
-            {likesCount}
+            {likeCount}
           </span>
         </div>
       </div>

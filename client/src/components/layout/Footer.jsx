@@ -21,16 +21,10 @@ const Footer = () => {
               Home
             </Link>
             <Link
-              to="/about"
+              to="/recipes/new"
               className="text-sm text-gray-500 dark:text-gray-400 hover:text-orange-500 dark:hover:text-orange-400 transition-colors"
             >
-              About
-            </Link>
-            <Link
-              to="/privacy"
-              className="text-sm text-gray-500 dark:text-gray-400 hover:text-orange-500 dark:hover:text-orange-400 transition-colors"
-            >
-              Privacy
+              Share Recipe
             </Link>
           </nav>
         </div>

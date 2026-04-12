@@ -54,10 +54,10 @@ const RecipeDetailPage = () => {
     try {
       setLoading(true);
       const { data } = await recipeService.getBySlug(slug);
-      const r = data.data;
+      const r = data.data.recipe;
 
       setRecipe(r);
-      setLikesCount(r.likesCount || 0);
+      setLikesCount(r.likeCount || 0);
       setLiked(r.likes?.includes(user?._id) || false);
     } catch (error) {
       if (error.response?.status === 404) {

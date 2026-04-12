@@ -112,7 +112,7 @@ const HomePage = () => {
             Discover Delicious Recipes
           </h1>
           <p className="mt-4 text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            Explore thousands of recipes from home cooks and professional chefs around the world.
+            Explore recipes from home cooks and food lovers. Find inspiration for your next meal.
           </p>
           {isAuthenticated && (
             <Link
