@@ -42,7 +42,7 @@ export const createRecipeRules = [
     .withMessage('Invalid category'),
   body('cookTime')
     .notEmpty().withMessage('Cook time is required')
-    .isInt({ min: 1 }).withMessage('Cook time must be at least 1 minute'),
+    .isInt({ min: 0 }).withMessage('Cook time cannot be negative'),
   body('prepTime')
     .optional()
     .isInt({ min: 0 }).withMessage('Prep time must be 0 or more minutes'),
