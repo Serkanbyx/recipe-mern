@@ -21,8 +21,8 @@ export const AuthProvider = ({ children }) => {
 
       try {
         const { data } = await authService.getMe();
-        setUser(data.data);
-        localStorage.setItem('user', JSON.stringify(data.data));
+        setUser(data.data.user);
+        localStorage.setItem('user', JSON.stringify(data.data.user));
       } catch {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = useCallback(async (email, password) => {
     const { data } = await authService.login({ email, password });
-    const { token: newToken, user: userData } = data;
+    const { token: newToken, user: userData } = data.data;
 
     localStorage.setItem('token', newToken);
     localStorage.setItem('user', JSON.stringify(userData));
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = useCallback(async (name, email, password) => {
     const { data } = await authService.register({ name, email, password });
-    const { token: newToken, user: userData } = data;
+    const { token: newToken, user: userData } = data.data;
 
     localStorage.setItem('token', newToken);
     localStorage.setItem('user', JSON.stringify(userData));

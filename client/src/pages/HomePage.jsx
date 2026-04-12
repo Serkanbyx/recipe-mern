@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { ChefHat, PlusCircle } from 'lucide-react';
+import toast from 'react-hot-toast';
 import useAuth from '../hooks/useAuth';
 import recipeService from '../services/recipeService';
 import { SORT_OPTIONS } from '../utils/constants';
@@ -57,10 +58,11 @@ const HomePage = () => {
         setRecipes(data?.data?.recipes || []);
         setTotal(data?.data?.total || 0);
         setTotalPages(data?.data?.totalPages || 1);
-      } catch {
+      } catch (error) {
         setRecipes([]);
         setTotal(0);
         setTotalPages(1);
+        toast.error(error.response?.data?.message || 'Failed to load recipes');
       } finally {
         setLoading(false);
       }

@@ -9,9 +9,7 @@ const recipeService = {
   update: (id, data) => api.put(`/recipes/${id}`, data),
   delete: (id) => api.delete(`/recipes/${id}`),
   toggleLike: (id) => api.put(`/recipes/${id}/like`),
-  uploadImage: (formData) => api.post('/recipes/upload', formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-  }),
+  uploadImage: (formData) => api.post('/recipes/upload', formData),
 };
 
 export default recipeService;
