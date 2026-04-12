@@ -1,5 +1,6 @@
 import User from '../models/User.js';
 import generateToken from '../utils/generateToken.js';
+import { deleteCloudinaryImage } from '../utils/helpers.js';
 
 const sanitizeUser = (user) => ({
   _id: user._id,
@@ -119,8 +120,20 @@ export const deleteAccount = async (req, res, next) => {
       return res.status(400).json({ success: false, message: 'Password is incorrect' });
     }
 
-    // Lazy-import to avoid circular dependency (Recipe model created in later steps)
     const Recipe = (await import('../models/Recipe.js')).default;
+
+    const userRecipes = await Recipe.find({ author: user._id });
+
+    const cloudinaryDeletePromises = userRecipes
+      .filter((recipe) => recipe.imagePublicId)
+      .map((recipe) => deleteCloudinaryImage(recipe.imagePublicId));
+    await Promise.all(cloudinaryDeletePromises);
+
+    const recipeIds = userRecipes.map((recipe) => recipe._id);
+    await User.updateMany(
+      { favorites: { $in: recipeIds } },
+      { $pull: { favorites: { $in: recipeIds } } },
+    );
 
     await Recipe.deleteMany({ author: user._id });
     await Recipe.updateMany({ likes: user._id }, { $pull: { likes: user._id } });
