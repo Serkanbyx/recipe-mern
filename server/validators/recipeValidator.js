@@ -53,7 +53,7 @@ export const createRecipeRules = [
     .optional()
     .isIn(['Easy', 'Medium', 'Hard']).withMessage('Difficulty must be Easy, Medium, or Hard'),
   body('image')
-    .optional()
+    .optional({ values: 'falsy' })
     .isURL().withMessage('Image must be a valid URL'),
   body('tags')
     .optional()

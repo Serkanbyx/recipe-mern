@@ -251,10 +251,13 @@ const EditRecipePage = () => {
           name: name.trim(),
         })),
         steps: steps.map((step) => step.text.trim()),
-        image: imageData.url,
-        imagePublicId: imageData.publicId,
         tags: tagsArray,
       };
+
+      if (imageData.url) {
+        payload.image = imageData.url;
+        payload.imagePublicId = imageData.publicId;
+      }
 
       const { data } = await recipeService.update(id, payload);
       toast.success('Recipe updated!');
