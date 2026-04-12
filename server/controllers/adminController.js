@@ -26,7 +26,7 @@ export const getDashboardStats = async (req, res, next) => {
       Recipe.find()
         .sort({ likes: -1 })
         .limit(5)
-        .select('title slug likes image')
+        .select('title slug likes image author')
         .populate('author', 'name avatar'),
       User.find()
         .sort({ createdAt: -1 })
@@ -35,7 +35,7 @@ export const getDashboardStats = async (req, res, next) => {
       Recipe.find()
         .sort({ createdAt: -1 })
         .limit(5)
-        .select('title slug status category image createdAt')
+        .select('title slug status category image createdAt author likes prepTime cookTime')
         .populate('author', 'name avatar'),
     ]);
 

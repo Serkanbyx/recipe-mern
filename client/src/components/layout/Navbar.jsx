@@ -129,7 +129,7 @@ const Navbar = () => {
 
                     <div className="py-1">
                       <Link
-                        to="/profile"
+                        to={`/profile/${user?._id}`}
                         onClick={() => setIsDropdownOpen(false)}
                         className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
                       >
@@ -254,7 +254,7 @@ const Navbar = () => {
                 </div>
               </div>
 
-              <NavLink to="/profile" className={navLinkClass} onClick={closeMobileMenu}>
+              <NavLink to={`/profile/${user?._id}`} className={navLinkClass} onClick={closeMobileMenu}>
                 <User className="w-4 h-4" />
                 Profile
               </NavLink>

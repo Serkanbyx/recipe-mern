@@ -38,8 +38,9 @@ const AdminUsersPage = () => {
       if (roleFilter) params.role = roleFilter;
 
       const { data } = await adminService.getUsers(params);
-      setUsers(data.data);
-      setTotalPages(data.totalPages || 1);
+      const result = data.data;
+      setUsers(result.users);
+      setTotalPages(result.totalPages || 1);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to load users');
     } finally {

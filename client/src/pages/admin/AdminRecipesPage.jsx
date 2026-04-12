@@ -55,8 +55,9 @@ const AdminRecipesPage = () => {
       if (difficulty) params.difficulty = difficulty;
 
       const { data } = await adminService.getRecipes(params);
-      setRecipes(data.data);
-      setTotalPages(data.totalPages || 1);
+      const result = data.data;
+      setRecipes(result.recipes);
+      setTotalPages(result.totalPages || 1);
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to load recipes');
     } finally {

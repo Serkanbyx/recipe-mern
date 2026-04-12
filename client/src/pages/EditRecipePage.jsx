@@ -92,7 +92,7 @@ const EditRecipePage = () => {
     const fetchRecipe = async () => {
       try {
         const { data } = await recipeService.getById(id);
-        const recipe = data.data;
+        const recipe = data.data.recipe;
 
         if (recipe.author._id !== user._id && user.role !== 'admin') {
           toast.error('You are not authorized to edit this recipe.');
@@ -188,7 +188,7 @@ const EditRecipePage = () => {
       const uploadData = new FormData();
       uploadData.append('image', image);
       const { data } = await recipeService.uploadImage(uploadData);
-      setImageData({ url: data.url, publicId: data.publicId });
+      setImageData({ url: data.data.url, publicId: data.data.publicId });
       setImage(null);
       setImagePreview('');
       toast.success('Image uploaded successfully!');
@@ -258,7 +258,7 @@ const EditRecipePage = () => {
 
       const { data } = await recipeService.update(id, payload);
       toast.success('Recipe updated!');
-      navigate(`/recipes/${data.data.slug}`);
+      navigate(`/recipes/${data.data.recipe.slug}`);
     } catch (error) {
       toast.error(getErrorMessage(error));
     } finally {

@@ -132,7 +132,7 @@ const CreateRecipePage = () => {
       const uploadData = new FormData();
       uploadData.append('image', image);
       const { data } = await recipeService.uploadImage(uploadData);
-      setImageData({ url: data.url, publicId: data.publicId });
+      setImageData({ url: data.data.url, publicId: data.data.publicId });
       setImage(null);
       setImagePreview('');
       toast.success('Image uploaded successfully!');
@@ -202,7 +202,7 @@ const CreateRecipePage = () => {
 
       const { data } = await recipeService.create(payload);
       toast.success('Recipe created!');
-      navigate(`/recipes/${data.data.slug}`);
+      navigate(`/recipes/${data.data.recipe.slug}`);
     } catch (error) {
       toast.error(getErrorMessage(error));
     } finally {
@@ -216,7 +216,7 @@ const CreateRecipePage = () => {
         Create New Recipe
       </h1>
 
-      <form onSubmit={handleSubmit} className="space-y-8">
+      <form onSubmit={handleSubmit} method="post" className="space-y-8">
         {/* Image Upload Section */}
         <section className="space-y-3">
           <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300">
@@ -325,6 +325,9 @@ const CreateRecipePage = () => {
               id="title"
               name="title"
               type="text"
+              required
+              minLength={3}
+              maxLength={100}
               value={formData.title}
               onChange={handleChange}
               placeholder="Enter recipe title"
@@ -348,6 +351,8 @@ const CreateRecipePage = () => {
               id="description"
               name="description"
               rows={4}
+              required
+              minLength={10}
               value={formData.description}
               onChange={handleChange}
               placeholder="Describe your recipe..."
@@ -381,6 +386,7 @@ const CreateRecipePage = () => {
               <select
                 id="category"
                 name="category"
+                required
                 value={formData.category}
                 onChange={handleChange}
                 className={`w-full px-4 py-2.5 rounded-lg border ${
@@ -448,6 +454,7 @@ const CreateRecipePage = () => {
                 id="cookTime"
                 name="cookTime"
                 type="number"
+                required
                 min="1"
                 value={formData.cookTime}
                 onChange={handleChange}
@@ -471,6 +478,7 @@ const CreateRecipePage = () => {
                 id="servings"
                 name="servings"
                 type="number"
+                required
                 min="1"
                 max="100"
                 value={formData.servings}

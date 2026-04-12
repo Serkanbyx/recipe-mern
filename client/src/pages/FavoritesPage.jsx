@@ -44,7 +44,7 @@ const FavoritesPage = () => {
     setLoading(true);
     try {
       const { data } = await favoriteService.getMyFavorites({ page, limit: LIMIT });
-      setRecipes(data?.data?.favorites || []);
+      setRecipes(data?.data?.recipes || []);
       setTotal(data?.data?.total || 0);
       setTotalPages(data?.data?.totalPages || 1);
     } catch {

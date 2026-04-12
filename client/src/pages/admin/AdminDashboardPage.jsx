@@ -212,7 +212,7 @@ const AdminDashboardPage = () => {
                   </div>
                   <div className="flex items-center gap-1 text-sm text-red-500 dark:text-red-400 font-medium">
                     <Heart className="w-3.5 h-3.5 fill-current" />
-                    {recipe.likes?.length ?? recipe.likes ?? 0}
+                    {recipe.likeCount ?? 0}
                   </div>
                 </div>
               ))}

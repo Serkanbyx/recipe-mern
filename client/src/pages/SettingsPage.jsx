@@ -99,7 +99,7 @@ const ProfileSettings = () => {
         bio: bio.trim(),
         avatar: avatarUrl,
       });
-      updateUser(data.data);
+      updateUser(data.data.user);
       toast.success('Profile updated');
     } catch (error) {
       toast.error(error.response?.data?.message || 'Failed to update profile.');

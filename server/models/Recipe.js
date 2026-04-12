@@ -149,11 +149,11 @@ recipeSchema.index({ createdAt: -1 });
 
 // Virtuals
 recipeSchema.virtual('likeCount').get(function () {
-  return this.likes.length;
+  return this.likes?.length ?? 0;
 });
 
 recipeSchema.virtual('totalTime').get(function () {
-  return this.prepTime + this.cookTime;
+  return (this.prepTime ?? 0) + (this.cookTime ?? 0);
 });
 
 recipeSchema.set('toJSON', { virtuals: true });

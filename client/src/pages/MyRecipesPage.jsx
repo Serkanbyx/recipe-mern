@@ -168,7 +168,7 @@ const MyRecipesPage = () => {
               <RecipeCard recipe={recipe} />
 
               {/* Status Badge Overlay */}
-              <div className="absolute bottom-4 left-4 z-10">
+              <div className="absolute top-10 left-3 z-10">
                 <StatusBadge status={recipe.status} />
               </div>
 

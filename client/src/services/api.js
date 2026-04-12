@@ -20,9 +20,11 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
+      const url = error.config?.url || '';
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      if (window.location.pathname !== '/login') {
+      // Skip redirect for silent auth checks — AuthContext handles these
+      if (!url.includes('/auth/me') && window.location.pathname !== '/login') {
         window.location.href = '/login';
       }
     }

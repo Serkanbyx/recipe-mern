@@ -87,10 +87,17 @@ export const getRecipeBySlug = async (req, res, next) => {
 // GET /api/recipes/:id
 export const getRecipeById = async (req, res, next) => {
   try {
-    const recipe = await Recipe.findOne({ _id: req.params.id, status: 'published' })
+    const recipe = await Recipe.findById(req.params.id)
       .populate('author', 'name avatar bio');
 
     if (!recipe) {
+      return res.status(404).json({ success: false, message: 'Recipe not found' });
+    }
+
+    const isOwner = req.user && recipe.author._id.toString() === req.user._id.toString();
+    const isAdmin = req.user?.role === 'admin';
+
+    if (recipe.status !== 'published' && !isOwner && !isAdmin) {
       return res.status(404).json({ success: false, message: 'Recipe not found' });
     }
 
