@@ -2,6 +2,10 @@
   "name": "recipe-app-server",
   "version": "1.0.0",
   "type": "module",
+  "author": {
+    "name": "Serkanby",
+    "url": "https://serkanbayraktar.com/"
+  },
   "scripts": {
     "dev": "nodemon index.js",
     "start": "node index.js",
@@ -22,7 +26,9 @@
     "mongoose": "^9.4.1",
     "multer": "^2.1.1",
     "multer-storage-cloudinary": "^4.0.0",
-    "slugify": "^1.6.9"
+    "slugify": "^1.6.9",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"
