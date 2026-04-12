@@ -1,7 +1,6 @@
 import Recipe from '../models/Recipe.js';
 import User from '../models/User.js';
-import cloudinary from '../config/cloudinary.js';
-import { escapeRegex } from '../utils/helpers.js';
+import { escapeRegex, deleteCloudinaryImage } from '../utils/helpers.js';
 
 // POST /api/recipes
 export const createRecipe = async (req, res, next) => {
@@ -160,10 +159,14 @@ export const updateRecipe = async (req, res, next) => {
     if (prepTime !== undefined) recipe.prepTime = prepTime;
     if (servings !== undefined) recipe.servings = servings;
     if (difficulty !== undefined) recipe.difficulty = difficulty;
-    if (image !== undefined) recipe.image = image;
-    if (imagePublicId !== undefined) recipe.imagePublicId = imagePublicId;
     if (tags !== undefined) recipe.tags = tags;
     if (status !== undefined) recipe.status = status;
+
+    if (imagePublicId !== undefined && imagePublicId !== recipe.imagePublicId) {
+      await deleteCloudinaryImage(recipe.imagePublicId);
+      recipe.imagePublicId = imagePublicId;
+    }
+    if (image !== undefined) recipe.image = image;
 
     await recipe.save();
     const updatedRecipe = await recipe.populate('author', 'name avatar');
@@ -189,9 +192,7 @@ export const deleteRecipe = async (req, res, next) => {
       return res.status(403).json({ success: false, message: 'Not authorized to delete this recipe' });
     }
 
-    if (recipe.imagePublicId) {
-      await cloudinary.uploader.destroy(recipe.imagePublicId);
-    }
+    await deleteCloudinaryImage(recipe.imagePublicId);
 
     await User.updateMany(
       { favorites: recipe._id },
@@ -201,6 +202,25 @@ export const deleteRecipe = async (req, res, next) => {
     await recipe.deleteOne();
 
     res.json({ success: true, message: 'Recipe deleted successfully' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// POST /api/recipes/upload
+export const uploadImage = async (req, res, next) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ success: false, message: 'No image file provided' });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: {
+        url: req.file.path,
+        publicId: req.file.filename,
+      },
+    });
   } catch (error) {
     next(error);
   }
