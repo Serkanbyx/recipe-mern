@@ -40,12 +40,15 @@ const SettingsLayout = () => {
           Settings
         </h2>
         <nav className="space-y-1">
-          {settingsSections.map(({ to, label, icon: Icon, end }) => (
-            <NavLink key={to} to={to} end={end} className={sidebarLinkClass}>
-              <Icon className="w-4 h-4" />
-              {label}
-            </NavLink>
-          ))}
+          {settingsSections.map(({ to, label, icon, end }) => {
+            const Icon = icon;
+            return (
+              <NavLink key={to} to={to} end={end} className={sidebarLinkClass}>
+                <Icon className="w-4 h-4" />
+                {label}
+              </NavLink>
+            );
+          })}
         </nav>
       </aside>
 
@@ -71,24 +74,27 @@ const SettingsLayout = () => {
 
           {isMobileNavOpen && (
             <div className="absolute left-0 right-0 mt-1 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-lg shadow-lg py-1 z-20">
-              {settingsSections.map(({ to, label, icon: Icon, end }) => (
-                <NavLink
-                  key={to}
-                  to={to}
-                  end={end}
-                  onClick={() => setIsMobileNavOpen(false)}
-                  className={({ isActive }) =>
-                    `flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-colors ${
-                      isActive
-                        ? 'text-orange-600 bg-orange-50 dark:text-orange-400 dark:bg-orange-950'
-                        : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
-                    }`
-                  }
-                >
-                  <Icon className="w-4 h-4" />
-                  {label}
-                </NavLink>
-              ))}
+              {settingsSections.map(({ to, label, icon, end }) => {
+                const Icon = icon;
+                return (
+                  <NavLink
+                    key={to}
+                    to={to}
+                    end={end}
+                    onClick={() => setIsMobileNavOpen(false)}
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 px-4 py-2.5 text-sm font-medium transition-colors ${
+                        isActive
+                          ? 'text-orange-600 bg-orange-50 dark:text-orange-400 dark:bg-orange-950'
+                          : 'text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800'
+                      }`
+                    }
+                  >
+                    <Icon className="w-4 h-4" />
+                    {label}
+                  </NavLink>
+                );
+              })}
             </div>
           )}
         </div>

@@ -125,22 +125,25 @@ const AdminDashboardPage = () => {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {STAT_CARDS.map(({ key, label, icon: Icon, color, iconBg }) => (
-          <div
-            key={key}
-            className={`rounded-xl p-5 ${color} border border-transparent`}
-          >
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm font-medium opacity-80">{label}</p>
-                <p className="mt-1 text-3xl font-bold">{stats[key].toLocaleString()}</p>
-              </div>
-              <div className={`w-12 h-12 rounded-lg ${iconBg} flex items-center justify-center`}>
-                <Icon className="w-6 h-6" />
+        {STAT_CARDS.map(({ key, label, icon, color, iconBg }) => {
+          const Icon = icon;
+          return (
+            <div
+              key={key}
+              className={`rounded-xl p-5 ${color} border border-transparent`}
+            >
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium opacity-80">{label}</p>
+                  <p className="mt-1 text-3xl font-bold">{stats[key].toLocaleString()}</p>
+                </div>
+                <div className={`w-12 h-12 rounded-lg ${iconBg} flex items-center justify-center`}>
+                  <Icon className="w-6 h-6" />
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Charts / Lists Section */}

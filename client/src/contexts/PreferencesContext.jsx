@@ -1,5 +1,5 @@
-import { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
-import { useAuth } from './AuthContext';
+import { createContext, useState, useEffect, useCallback, useMemo } from 'react';
+import useAuth from '../hooks/useAuth';
 import authService from '../services/authService';
 
 const PreferencesContext = createContext(null);
@@ -22,37 +22,25 @@ const getStoredPreferences = () => {
   }
 };
 
-export const usePreferences = () => {
-  const context = useContext(PreferencesContext);
-  if (!context) {
-    throw new Error('usePreferences must be used within a PreferencesProvider');
-  }
-  return context;
-};
-
 export const PreferencesProvider = ({ children }) => {
   const { isAuthenticated } = useAuth();
   const [preferences, setPreferences] = useState(getStoredPreferences);
 
   const { theme, fontSize, contentDensity, animations } = preferences;
 
-  // Resolve effective theme based on system preference
-  const [resolvedTheme, setResolvedTheme] = useState('light');
+  const getSystemTheme = () =>
+    window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+
+  const [systemTheme, setSystemTheme] = useState(getSystemTheme);
 
   useEffect(() => {
-    if (theme !== 'system') {
-      setResolvedTheme(theme);
-      return;
-    }
-
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    setResolvedTheme(mediaQuery.matches ? 'dark' : 'light');
-
-    const handleChange = (e) => setResolvedTheme(e.matches ? 'dark' : 'light');
+    const handleChange = (e) => setSystemTheme(e.matches ? 'dark' : 'light');
     mediaQuery.addEventListener('change', handleChange);
-
     return () => mediaQuery.removeEventListener('change', handleChange);
-  }, [theme]);
+  }, []);
+
+  const resolvedTheme = theme === 'system' ? systemTheme : theme;
 
   // Apply theme class to document
   useEffect(() => {

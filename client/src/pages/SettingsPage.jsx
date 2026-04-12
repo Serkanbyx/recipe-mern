@@ -12,8 +12,8 @@ import {
   Moon,
   Monitor,
 } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
-import { usePreferences } from '../contexts/PreferencesContext';
+import useAuth from '../hooks/useAuth';
+import usePreferences from '../hooks/usePreferences';
 import authService from '../services/authService';
 import recipeService from '../services/recipeService';
 import CharacterCounter from '../components/ui/CharacterCounter';
@@ -282,12 +282,9 @@ const DeleteAccountModal = ({ isOpen, onClose, onConfirm, loading }) => {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = '';
+      setPassword('');
     };
   }, [isOpen, onClose]);
-
-  useEffect(() => {
-    if (!isOpen) setPassword('');
-  }, [isOpen]);
 
   if (!isOpen) return null;
 

@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { Upload, X, Image as ImageIcon, Loader2 } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
+import useAuth from '../hooks/useAuth';
 import recipeService from '../services/recipeService';
 import IngredientForm from '../components/recipe/IngredientForm';
 import StepForm from '../components/recipe/StepForm';

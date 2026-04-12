@@ -2,7 +2,7 @@ import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { Upload, X, Image as ImageIcon, Loader2 } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
+
 import recipeService from '../services/recipeService';
 import IngredientForm from '../components/recipe/IngredientForm';
 import StepForm from '../components/recipe/StepForm';
@@ -59,7 +59,6 @@ const validateForm = (formData, ingredients, steps) => {
 
 const CreateRecipePage = () => {
   const navigate = useNavigate();
-  const { user } = useAuth();
   const fileInputRef = useRef(null);
 
   const [formData, setFormData] = useState({

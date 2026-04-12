@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import {
   Mail, Calendar, BookOpen, Heart, Settings, AlertCircle, ChefHat,
 } from 'lucide-react';
-import { useAuth } from '../../contexts/AuthContext';
+import useAuth from '../../hooks/useAuth';
 import userService from '../../services/userService';
 import RecipeGrid from '../../components/recipe/RecipeGrid';
 import Pagination from '../../components/ui/Pagination';

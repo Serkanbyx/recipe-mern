@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Search, X, Trash2, AlertTriangle, Users } from 'lucide-react';
 import toast from 'react-hot-toast';
-import { useAuth } from '../../contexts/AuthContext';
+import useAuth from '../../hooks/useAuth';
 import adminService from '../../services/adminService';
 import useDebounce from '../../hooks/useDebounce';
 import RoleBadge from '../../components/ui/RoleBadge';

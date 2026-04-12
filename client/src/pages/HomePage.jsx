@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { ChefHat, PlusCircle } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
+import useAuth from '../hooks/useAuth';
 import recipeService from '../services/recipeService';
 import { SORT_OPTIONS } from '../utils/constants';
 import SearchBar from '../components/recipe/SearchBar';

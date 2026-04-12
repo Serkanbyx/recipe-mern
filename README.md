@@ -145,10 +145,6 @@ A full-stack recipe sharing platform built with the MERN stack. Create, share, a
 - File upload validation (MIME whitelist, size limit)
 - Owner/admin authorization checks
 
-## Screenshots
-
-(screenshots coming soon)
-
 ## Deployment
 
 ### Backend (Render)

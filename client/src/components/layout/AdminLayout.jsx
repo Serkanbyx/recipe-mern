@@ -58,18 +58,21 @@ const AdminLayout = () => {
         </div>
 
         <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-          {sidebarLinks.map(({ to, label, icon: Icon, end }) => (
-            <NavLink
-              key={to}
-              to={to}
-              end={end}
-              className={sidebarLinkClass}
-              onClick={closeSidebar}
-            >
-              <Icon className="w-5 h-5" />
-              {label}
-            </NavLink>
-          ))}
+          {sidebarLinks.map(({ to, label, icon, end }) => {
+            const Icon = icon;
+            return (
+              <NavLink
+                key={to}
+                to={to}
+                end={end}
+                className={sidebarLinkClass}
+                onClick={closeSidebar}
+              >
+                <Icon className="w-5 h-5" />
+                {label}
+              </NavLink>
+            );
+          })}
         </nav>
 
         <div className="px-3 py-4 border-t border-gray-200 dark:border-gray-800">

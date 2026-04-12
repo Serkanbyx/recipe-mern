@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-import { useAuth } from '../contexts/AuthContext';
+import useAuth from '../hooks/useAuth';
 import recipeService from '../services/recipeService';
 import favoriteService from '../services/favoriteService';
 import RecipeDetailSkeleton from '../components/ui/RecipeDetailSkeleton';
