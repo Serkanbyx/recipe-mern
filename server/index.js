@@ -1,8 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-import mongoSanitize from 'express-mongo-sanitize';
 import hpp from 'hpp';
+import sanitizeMongo from './middlewares/sanitize.js';
 import swaggerUi from 'swagger-ui-express';
 import { createRequire } from 'module';
 import connectDB from './config/db.js';
@@ -25,7 +25,7 @@ app.disable('x-powered-by');
 app.use(cors({ origin: env.CORS_ORIGIN, credentials: true }));
 app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
-app.use(mongoSanitize());
+app.use(sanitizeMongo);
 app.use(hpp());
 app.use(globalLimiter);
 
