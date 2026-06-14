@@ -42,7 +42,7 @@ export const getAllRecipes = async (req, res, next) => {
     const sortOptions = {
       newest: { createdAt: -1 },
       oldest: { createdAt: 1 },
-      popular: { likes: -1 },
+      popular: { likesCount: -1, createdAt: -1 },
       quickest: { cookTime: 1 },
     };
     const sortBy = sortOptions[sort] || sortOptions.newest;
@@ -245,13 +245,11 @@ export const toggleLike = async (req, res, next) => {
     const userId = req.user._id;
     const isLiked = recipe.likes.some((id) => id.toString() === userId.toString());
 
-    if (isLiked) {
-      await Recipe.findByIdAndUpdate(recipe._id, { $pull: { likes: userId } });
-    } else {
-      await Recipe.findByIdAndUpdate(recipe._id, { $addToSet: { likes: userId } });
-    }
+    const update = isLiked
+      ? { $pull: { likes: userId }, $inc: { likesCount: -1 } }
+      : { $addToSet: { likes: userId }, $inc: { likesCount: 1 } };
 
-    const updatedRecipe = await Recipe.findById(recipe._id);
+    const updatedRecipe = await Recipe.findByIdAndUpdate(recipe._id, update, { new: true });
 
     res.json({
       success: true,

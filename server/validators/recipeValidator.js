@@ -1,6 +1,14 @@
 import { body, query, param } from 'express-validator';
 
-export const createRecipeRules = [
+/**
+ * Builds a fresh set of recipe body validation chains.
+ *
+ * express-validator chains are mutable: calling `.optional()` mutates the chain
+ * in place and returns the same instance. Returning brand-new chains on every
+ * call prevents the update ruleset from leaking its `.optional()` modifier back
+ * into the create ruleset (which must keep its required fields).
+ */
+const buildRecipeBodyRules = () => [
   body('title')
     .trim()
     .notEmpty().withMessage('Title is required')
@@ -68,7 +76,12 @@ export const createRecipeRules = [
     .isIn(['draft', 'published']).withMessage('Status must be draft or published'),
 ];
 
-export const updateRecipeRules = [...createRecipeRules.map((rule) => rule.optional())];
+// Create: every field validated with its required/optional rules as defined above.
+export const createRecipeRules = buildRecipeBodyRules();
+
+// Update (PATCH-like PUT): every field becomes optional so partial updates pass,
+// using a separate fresh ruleset to avoid mutating the create chains.
+export const updateRecipeRules = buildRecipeBodyRules().map((rule) => rule.optional());
 
 export const recipeQueryRules = [
   query('search')

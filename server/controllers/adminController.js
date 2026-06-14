@@ -24,9 +24,9 @@ export const getDashboardStats = async (req, res, next) => {
         { $sort: { count: -1 } },
       ]),
       Recipe.find()
-        .sort({ likes: -1 })
+        .sort({ likesCount: -1, createdAt: -1 })
         .limit(5)
-        .select('title slug likes image author')
+        .select('title slug likes likesCount image author')
         .populate('author', 'name avatar'),
       User.find()
         .sort({ createdAt: -1 })

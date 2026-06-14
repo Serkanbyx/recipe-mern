@@ -83,23 +83,34 @@ Before suggesting, please check if:
 Make sure you have the following installed:
 
 - Git
+- Node.js v18+ and npm
+- A MongoDB Atlas account or a local MongoDB instance
+- A Cloudinary account (for image uploads)
 - A code editor (VS Code recommended)
-- Required runtime/dependencies for the project
 
 ### Local Installation
 
 ```bash
 # Clone your fork
-git clone https://github.com/YOUR_USERNAME/REPOSITORY_NAME.git
+git clone https://github.com/YOUR_USERNAME/recipe-mern.git
 
 # Navigate to project directory
-cd REPOSITORY_NAME
+cd recipe-mern
 
-# Install dependencies (if applicable)
-# npm install / pip install -r requirements.txt / etc.
+# Install backend dependencies
+cd server && npm install
 
-# Start development server (if applicable)
-# npm start / python app.py / etc.
+# Install frontend dependencies
+cd ../client && npm install
+
+# Configure environment variables
+cp server/.env.example server/.env
+
+# Start the backend (Terminal 1)
+cd server && npm run dev
+
+# Start the frontend (Terminal 2)
+cd client && npm run dev
 ```
 
 ## Style Guidelines
@@ -121,11 +132,11 @@ We follow semantic commit messages:
 **Examples:**
 
 ```
-feat: add user authentication
-fix: resolve login redirect issue
+feat: add recipe rating system
+fix: resolve popular sort ordering bug
 docs: update installation instructions
 style: format code with prettier
-refactor: simplify validation logic
+refactor: simplify recipe validation logic
 ```
 
 **Commit Message Rules:**
@@ -137,12 +148,13 @@ refactor: simplify validation logic
 
 ### Code Style
 
-- Use consistent indentation (2 or 4 spaces)
-- Use meaningful variable and function names
-- Write comments for complex logic
+- Use consistent indentation (2 spaces)
+- Use meaningful variable and function names (camelCase, English)
+- Write comments only for non-obvious intent or trade-offs
 - Keep functions small and focused
 - Follow DRY (Don't Repeat Yourself) principle
 - Remove unused code and imports
+- Prefer modern syntax (ES6+, async/await, React Hooks)
 
 ## Branch Naming Convention
 
@@ -150,11 +162,11 @@ Use descriptive branch names with prefixes:
 
 | Prefix      | Use Case         | Example                   |
 | ----------- | ---------------- | ------------------------- |
-| `feature/`  | New features     | `feature/user-auth`       |
-| `fix/`      | Bug fixes        | `fix/login-error`         |
+| `feature/`  | New features     | `feature/recipe-ratings`  |
+| `fix/`      | Bug fixes        | `fix/like-count`          |
 | `hotfix/`   | Urgent fixes     | `hotfix/security-patch`   |
 | `docs/`     | Documentation    | `docs/api-guide`          |
-| `refactor/` | Code refactoring | `refactor/database-layer` |
+| `refactor/` | Code refactoring | `refactor/recipe-service` |
 
 ## Questions?
 

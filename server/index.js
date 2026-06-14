@@ -20,7 +20,25 @@ const { version } = require('./package.json');
 
 const app = express();
 
-app.use(helmet({ contentSecurityPolicy: false }));
+app.use(helmet({
+  contentSecurityPolicy: {
+    useDefaults: true,
+    directives: {
+      defaultSrc: ["'self'"],
+      // 'unsafe-inline' is required by the bundled Swagger UI init script/styles
+      // and the inline-styled welcome page; the JSON API itself serves no HTML.
+      scriptSrc: ["'self'", "'unsafe-inline'"],
+      styleSrc: ["'self'", "'unsafe-inline'", 'https:'],
+      imgSrc: ["'self'", 'data:', 'https:'],
+      fontSrc: ["'self'", 'https:', 'data:'],
+      connectSrc: ["'self'"],
+      objectSrc: ["'none'"],
+      // Disabled so http://localhost requests (dev + Swagger "Try it out") are
+      // not force-upgraded to https.
+      upgradeInsecureRequests: null,
+    },
+  },
+}));
 app.disable('x-powered-by');
 app.use(cors({ origin: env.CORS_ORIGIN, credentials: true }));
 app.use(express.json({ limit: '10kb' }));

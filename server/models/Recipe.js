@@ -120,6 +120,13 @@ const recipeSchema = new mongoose.Schema(
         ref: 'User',
       },
     ],
+    // Denormalized like total kept in sync with `likes` for efficient, correct
+    // "popular" sorting (sorting by the array itself compares elements, not size).
+    likesCount: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
     status: {
       type: String,
       enum: {
@@ -146,6 +153,8 @@ recipeSchema.index({ category: 1, status: 1 });
 recipeSchema.index({ author: 1 });
 // slug uniqueness is enforced via field-level `unique: true`
 recipeSchema.index({ createdAt: -1 });
+// Supports the published "popular" listing (filter by status, sort by likes).
+recipeSchema.index({ status: 1, likesCount: -1 });
 
 // Virtuals
 recipeSchema.virtual('likeCount').get(function () {
