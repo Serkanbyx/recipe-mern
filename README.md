@@ -58,6 +58,71 @@
 
 ---
 
+## Screenshots
+
+A quick tour through the app — from discovering recipes to creating, saving, and personalizing them.
+
+<table>
+  <tr>
+    <td width="33%" align="center">
+      <img src="./assets/screenshots/home.png" alt="Home — discover recipes" width="100%" /><br />
+      <sub><b>Home</b> — discover recipes</sub>
+    </td>
+    <td width="33%" align="center">
+      <img src="./assets/screenshots/recipe-catalog.png" alt="Catalog — filter, sort & paginate" width="100%" /><br />
+      <sub><b>Catalog</b> — filter, sort &amp; paginate</sub>
+    </td>
+    <td width="33%" align="center">
+      <img src="./assets/screenshots/recipe-detail.png" alt="Recipe detail — ingredients & steps" width="100%" /><br />
+      <sub><b>Recipe detail</b> — ingredients &amp; steps</sub>
+    </td>
+  </tr>
+  <tr>
+    <td width="33%" align="center">
+      <img src="./assets/screenshots/create-recipe.png" alt="Create recipe — rich dynamic form" width="100%" /><br />
+      <sub><b>Create recipe</b> — rich dynamic form</sub>
+    </td>
+    <td width="33%" align="center">
+      <img src="./assets/screenshots/login.png" alt="Login — JWT authentication" width="100%" /><br />
+      <sub><b>Login</b> — JWT authentication</sub>
+    </td>
+    <td width="33%" align="center">
+      <img src="./assets/screenshots/register.png" alt="Register — create an account" width="100%" /><br />
+      <sub><b>Register</b> — create an account</sub>
+    </td>
+  </tr>
+  <tr>
+    <td width="33%" align="center">
+      <img src="./assets/screenshots/favorites.png" alt="Favorites — your saved collection" width="100%" /><br />
+      <sub><b>Favorites</b> — your saved collection</sub>
+    </td>
+    <td width="33%" align="center">
+      <img src="./assets/screenshots/user-profile.png" alt="Profile — public recipes & favorites" width="100%" /><br />
+      <sub><b>Profile</b> — public recipes &amp; favorites</sub>
+    </td>
+    <td width="33%" align="center">
+      <img src="./assets/screenshots/settings.png" alt="Settings — profile, account, appearance & privacy" width="100%" /><br />
+      <sub><b>Settings</b> — profile, account, appearance &amp; privacy</sub>
+    </td>
+  </tr>
+  <tr>
+    <td width="33%" align="center">
+      <img src="./assets/screenshots/admin-dashboard.png" alt="Admin dashboard — platform statistics" width="100%" /><br />
+      <sub><b>Admin dashboard</b> — platform statistics</sub>
+    </td>
+    <td width="33%" align="center">
+      <img src="./assets/screenshots/admin-users.png" alt="Admin — user & role management" width="100%" /><br />
+      <sub><b>Admin · Users</b> — user &amp; role management</sub>
+    </td>
+    <td width="33%" align="center">
+      <img src="./assets/screenshots/admin-recipes.png" alt="Admin — recipe moderation" width="100%" /><br />
+      <sub><b>Admin · Recipes</b> — recipe moderation</sub>
+    </td>
+  </tr>
+</table>
+
+---
+
 ## Architecture
 
 A high-level visual map of the system. Both diagrams render natively on GitHub thanks to Mermaid support.
@@ -404,6 +469,10 @@ client/
 recipe-mern/
 ├── client/               # → see Client panel above
 ├── server/               # → see Server panel above
+├── assets/
+│   └── screenshots/      # README preview images
+├── docs/
+│   └── build-guide.md    # step-by-step build walkthrough
 ├── .github/
 │   ├── ISSUE_TEMPLATE/   # bug_report.yml, feature_request.yml, config.yml
 │   ├── CODE_OF_CONDUCT.md
